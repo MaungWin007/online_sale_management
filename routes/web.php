@@ -21,3 +21,8 @@ Route::get('admin',function(){
     return view('Admin_Panel.master');
 });
 
+
+Auth::routes();
+Route::get('adminregister',[admincontroller::class,"regform"]);
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
