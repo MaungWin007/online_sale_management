@@ -65,7 +65,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        
+        if(!isset($data["usertype"]))
+        {
+            $data["usertype"]="customer";
+        }
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -73,8 +76,8 @@ class RegisterController extends Controller
             'phoneno'=>'119',
             'uuid'=>Str::uuid()->toString(),
             'image'=>'sjdnjjadiw',
-            'type'=>'customer',
-            'branch_id'=>'B-123',
+            'type'=>$data["usertype"],
+            'branch_id'=>'123',
             'status'=>'Active',
 
         ]);

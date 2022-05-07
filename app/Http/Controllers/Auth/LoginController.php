@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 class LoginController extends Controller
 {
     /*
@@ -26,7 +27,34 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+     protected $redirectTo = RouteServiceProvider::HOME;
+
+    public function login(Request $request)
+    {
+        //  dd($request);
+        $input=$request->all();
+        $this->validate($request,[
+            'email'=>'required|email',
+            'password'=>'required'
+        ]);
+
+        $userdata=array('email'=>$input["email"],
+        'password'=>$input["password"]);
+        if(auth()->attempt($userdata))
+        {
+            // return authenticated user
+            // auth()->user()->type
+            $user=auth()->user();
+            // dd($user->type);
+            if($user->type=="admin")
+            {
+                return redirect()->route('admin.dashboard');
+            }
+            else{
+                return redirect()->route('home');
+            }
+        }
+    }
 
     /**
      * Create a new controller instance.

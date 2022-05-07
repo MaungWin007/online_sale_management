@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admincontroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::get('admin',function(){
 
 
 Auth::routes();
-Route::get('adminregister',[admincontroller::class,"regform"]);
+Route::get('adminregister',[admincontroller::class,'regform']);
+Route::get('/Admin/dashboard',[admincontroller::class,'admindashboard'])->name('admin.dashboard');
+Route::get('/Admin/login',[admincontroller::class,'loginform'])->name('admin.loginform');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
