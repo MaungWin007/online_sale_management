@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\staff;
 
-class admincontroller extends Controller
+class staffcontroller extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function regform()
-    {
-        return view("admin.register");
-        
-    }
     public function index()
     {
         //

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -70,7 +71,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phoneno'=>'119',
-            'uuid'=>'C-1',
+            'uuid'=>Str::uuid()->toString(),
             'image'=>'sjdnjjadiw',
             'type'=>'customer',
             'branch_id'=>'B-123',

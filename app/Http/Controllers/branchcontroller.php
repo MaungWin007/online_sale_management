@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\branch;
+use Illuminate\Support\Str;
 
-class admincontroller extends Controller
+class branchcontroller extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    function regform()
-    {
-        return view("admin.register");
-        
-    }
     public function index()
     {
-        //
+        $branch=branch::all();
     }
 
     /**
@@ -28,7 +25,7 @@ class admincontroller extends Controller
      */
     public function create()
     {
-        //
+        return view("branch.create");
     }
 
     /**
@@ -39,7 +36,13 @@ class admincontroller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $branch=new branch();
+        $branch->name=$request->name;
+        $branch->address=$request->address;
+        $branch->contact=$request->contact;
+        $branch->email=$request->email;
+        $branch->map=$request->map;
+
     }
 
     /**
