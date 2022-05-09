@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\branch;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use App\Models\role;
 
-class branchcontroller extends Controller
+class rolecontroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +14,8 @@ class branchcontroller extends Controller
      */
     public function index()
     {
-        $branch=branch::all();
-        return view('branch.index',compact('branch'));
+        $role=role::all();
+        return view('role.index',compact('role'));
     }
 
     /**
@@ -27,7 +25,7 @@ class branchcontroller extends Controller
      */
     public function create()
     {
-        return view("branch.create");
+        return view("role.create");
     }
 
     /**
@@ -38,19 +36,13 @@ class branchcontroller extends Controller
      */
     public function store(Request $request)
     {
-        $branch=new branch();
-        $branch->name=$request->name;
-        $branch->address=$request->address;
-        $branch->contact=$request->contact;
-        $branch->email=$request->email;
-        $branch->storemap=$request->storemap;
-        $branch->uuid=Str::uuid()->toString();
-        $branch->image=$request->image;
-        $branch->save();
+        $role=new role();
+        $role->name=$request->name;
+        $role->description=$request->description;
+        $role->save();
 
         $request->session()->flash('message','Successfully Save!');
-        return redirect('/branchprocess');
-
+        return redirect('/roleprocess');
     }
 
     /**
@@ -72,8 +64,8 @@ class branchcontroller extends Controller
      */
     public function edit($id)
     {
-        $branch=branch::find($id);
-        return view('branch.create',compact('branch'));
+        $role=role::find($id);
+        return view('role.create',compact('role'));
     }
 
     /**
@@ -85,16 +77,12 @@ class branchcontroller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $branch=branch::find($id);
-        $branch->name=$request->name;
-        $branch->address=$request->address;
-        $branch->contact=$request->contact;
-        $branch->email=$request->email;
-        $branch->storemap=$request->storemap;
-        $branch->image=$request->image;
-        $branch->save();
+        $role=role::find($id);
+        $role->name=$request->name;
+        $role->description=$request->description;
+        $role->save();
 
-        return redirect('/branchprocess');
+        return redirect('/roleprocess');
     }
 
     /**
@@ -103,23 +91,22 @@ class branchcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy($id)
     {
-        $branch=branch::find($id);
-        $branch->delete();
+        $role=role::find($id);
+        $role->delete();
         
-        return redirect('/branchprocess');
+        return redirect('/roleprocess');
     }
-    // search processing to branch table
     public function searchprocess(Request $request)
     {
-        $branch=array();
+        $role=array();
 
         if($request->t1!="")
         {
-            $branch=branch::where('name','LIKE','%'.$request->t1.'%')->get();
+            $role=role::where('name','LIKE','%'.$request->t1.'%')->get();
         }
         // $branchlist->withPath($branchlist->path()."?t1=".$request->t1);
-        return view("branch.index",compact("branch"));
+        return view("role.index",compact("role"));
     }
 }

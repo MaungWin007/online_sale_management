@@ -16,6 +16,8 @@
         @csrf
         <input type="submit" name="btn" value="Log Out">
     </form>
+    @else
+    No Permission to acces
     @endauth
 </body>
 </html>

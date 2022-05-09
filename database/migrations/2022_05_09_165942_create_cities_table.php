@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddToStaffs extends Migration
+class CreateCitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddToStaffs extends Migration
      */
     public function up()
     {
-        Schema::table('staffs', function (Blueprint $table) {
-            //
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('status')->default('Active');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddToStaffs extends Migration
      */
     public function down()
     {
-        Schema::table('staffs', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('cities');
     }
 }
