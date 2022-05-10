@@ -23,10 +23,11 @@ class User extends Authenticatable
         'password',
         'phoneno',
         'uuid',
-        'image',
+        'images',
         'type',
         'branch_id',
         'status'
+
     ];
 
     /**
@@ -48,3 +49,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 }
+

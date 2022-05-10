@@ -48,5 +48,16 @@ Route::get('citysearch',[citycontroller::class,"searchprocess"]);
 Route::resource('roleprocess', rolecontroller::class);
 Route::get('rolesearch',[rolecontroller::class,"searchprocess"]);
 
+// Admin Route Only
+Route::get('/admin/register',[admincontroller::class,"staffRegister"]);
+Route::post('/admin/save',[admincontroller::class,"Register"]);
+Route::get('/admin',[admincontroller::class,"stafflist"]);
+Route::get('/adminsearch',[admincontroller::class,"staffsearch"]);
+Route::get('/admin/{id}/edit',[admincontroller::class,"staffedit"]);
+Route::post('/admin/{id}/update',[admincontroller::class,"staffupdate"]);
+Route::get('/admin/{id}/detail',[admincontroller::class,"staffdetails"]);
+
+// view route
+// Route::view('/branch/create', 'branch.create');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

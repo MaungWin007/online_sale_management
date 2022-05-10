@@ -19,6 +19,7 @@
 
     <title>Admin Panel</title>
 </head>
+@extends('branch.create')
 <body>
         <div class="container-fluid">
     <div class="row">
@@ -56,12 +57,12 @@
                     <li class="sidebar-dropdown">
                       <a href="#">
                         <i class="fa fa-tachometer-alt"></i>
-                        <span>Category</span>
+                        <span>Branch</span>
                       </a>
                       <div class="sidebar-submenu">
                         <ul>
                           <li>
-                            <a href="#">Add Category</a>
+                            <a href="#">Add Branch</a>
                           </li>
                           <li>
                             <a href="#">View Category</a>
