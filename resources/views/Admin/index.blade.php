@@ -49,7 +49,7 @@
                 <td>{{$staff->images}}</td>
                 <td>{{$staff->rolename}}</td>
                 <td>{{$staff->branchname}}</td>
-                <td>{{$staff->status==0?"Inactive":"Active"}}</td>
+                <td>{{$staff->status}}</td>
                 <td>{{$staff->created_at}}</td>
                 <td>{{$staff->updated_at}}</td>
                 <td><a href="{{url('admin/'.$staff->id.'/edit')}}" class="btn btn-outline-secondary">Edit</a></td>

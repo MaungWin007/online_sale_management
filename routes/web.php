@@ -30,6 +30,7 @@ Auth::routes();
 Route::get('adminregister',[admincontroller::class,'regform']);
 Route::get('/Admin/dashboard',[admincontroller::class,'admindashboard'])->name('admin.dashboard');
 Route::get('/Admin/login',[admincontroller::class,'loginform'])->name('admin.loginform');
+Route::get('/admin/loginprocess',[admincontroller::class,'loginprocess']);
 
 // branch route
 Route::resource('branchprocess', branchcontroller::class);
@@ -56,6 +57,11 @@ Route::get('/adminsearch',[admincontroller::class,"staffsearch"]);
 Route::get('/admin/{id}/edit',[admincontroller::class,"staffedit"]);
 Route::post('/admin/{id}/update',[admincontroller::class,"staffupdate"]);
 Route::get('/admin/{id}/detail',[admincontroller::class,"staffdetails"]);
+
+Route::get('/customer/register',[admincontroller::class,"customerreg"]);
+Route::get('/customer/list',[admincontroller::class,"customerlist"]);
+Route::get('/customer/{id}/detail',[admincontroller::class,"customerdetail"]);
+Route::post('/customer/{id}/update',[AdminController::class,"customerupdate"]);
 
 // view route
 // Route::view('/branch/create', 'branch.create');

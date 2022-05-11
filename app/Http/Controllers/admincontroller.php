@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Auth;
 use App\Models\branch;
 use App\Models\role;
 use App\Models\User;
 use App\Models\staff;
+use App\Models\customer;
 
 class admincontroller extends Controller
 {
@@ -34,12 +36,53 @@ class admincontroller extends Controller
         return view("Admin.register",compact('branch','role'));
 
     }
+    function loginprocess(Request $request)
+    {
+        $input=$request->all();
+        $this->validate($request,[
+            'email'=>'required|email',
+            'password'=>'required'
+        ]);
+
+        $login=array(
+            'email'=>$input["email"],
+            'password'=>$input["password"]
+        );
+        if(auth()->attempt($login))
+        {
+            $user=auth()->user();
+            return redirect('/Admin/dashboard');
+        }
+        else{
+            return redirect('/Admin/login');
+        }
+
+    }
     function Register(Request $request)
     {
+        
         if(!isset($request["usertype"]))
         {
+            $this->validate($request,[
+                'name'=>['required','max:255'],
+                'phoneno' => ['required', 'max:255'],
+                'email' => ['required', 'email', 'max:255', 'unique:users'],
+                'password' => ['required','max:255','confirmed'],
+            ]);
+
             $request["usertype"]="customer";
-            $request["branch_id"] = 1; 
+            $request["branch_id"] = 6; 
+        }
+        else
+        {
+            $this->validate($request,[
+                'name'=>['required','max:255'],
+                'phoneno' => ['required', 'max:255'],
+                'email' => ['required', 'email', 'max:255', 'unique:users'],
+                'password' => ['required','max:255','confirmed'],
+                'branch_id'=>['required'],
+                'role_id'=>['required']
+            ]);
         }
 
         $user = User::create([
@@ -73,7 +116,7 @@ class admincontroller extends Controller
             $customer->uuid = Str::uuid()->toString();
             $customer->save();
 
-            return redirect('/customer');
+            return redirect('/customer/list');
         }
 
     }
@@ -90,12 +133,13 @@ class admincontroller extends Controller
                                 ->get();
 
         
-        //dd($all_staff_records);
+        //dd($staff_list);
 
         return view('Admin.index',compact('staff_list'));
     }
     function staffedit($id)
     {
+        // dd('edit');
         $user = DB::table('users')
                     ->join('staff','staff.user_id','=','users.id')
                     ->join('roles','roles.id','=','staff.role_id')
@@ -110,14 +154,15 @@ class admincontroller extends Controller
     }
     function staffupdate(Request $request,$id)
     {
+        // dd($id);
         $user=user::find($id);
         $user->name=$request->name;
         $user->phoneno=$request->phoneno;
         $user->images=$request->images;
-        $user->status=$request->status;
+        // $user->status=$request->status;
 
         $user->save();
-        return view('Admin.update',compact('user'));
+        return redirect('/admin');
     }
     function staffdetails($id)
     {
@@ -126,5 +171,72 @@ class admincontroller extends Controller
     function staffsearch()
     {
 
+    }
+
+    // customer by admin
+    function customerreg()
+    {
+        return view('Customer.register');
+    }
+    function customerlist()
+    {
+        
+        // $customer_list = DB::table('users')
+        //             ->join('customers','customers.user_id','=','users.id')
+        //             ->join('branches','branches.id','=','users.branch_id')
+        //             ->where('users.type',"customer")
+        //             ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
+        //             ->get();
+        $customer_list=user::all();
+                // dd($customer_list);
+        return view('Customer.index',compact('customer_list'));
+    }
+    function customerdetail()
+    {
+        $cusedit = DB::table('users')
+                    ->join('customers','customers.user_id','=','users.id')
+                    ->join('branches','branches.id','=','users.branch_id')
+                    ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
+                    ->where('users.id',$id)
+                    ->first();
+
+        
+
+        return view('Customer.index',compact('cusedit'));
+    }
+    function customeredit($id)
+    {
+        $edit=DB::table('users')
+                ->join('customers','customers.user_id','=','users.id')
+                ->join('branches','branches.id','=','users.branch_id')
+                ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
+                ->where('users.id',$id)
+                ->first();
+        return view('Customer.register',compact('edit'));
+
+    }
+    function customerupdate(Request $request,$id)
+    {
+        
+        $user=user::find($id);
+        $user->name=$request->name;
+        $user->phoneno=$request->phoneno;
+        $user->images=$request->images;
+        $user->status = $request->status;
+        
+        $user->save();
+
+        $customer = customer::where('user_id',$id)->first();
+        $customer->totalamount = $request->totalamount;
+        $customer->point = $request->point;
+        $customer->save();
+
+        $user = DB::table('users')
+                    ->join('customers','customers.user_id','=','users.id')
+                    ->join('branches','branches.id','=','users.branch_id')
+                    ->where('users.id',$id)
+                    ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
+                    ->first();
+        return redirect('/customer/list',compact('user'));
     }
 }

@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+
+use App\Models\User;
+use App\Models\staff;
+use App\Models\customer;
 
 class RegisterController extends Controller
 {
@@ -81,6 +85,13 @@ class RegisterController extends Controller
             'status'=>'Active',
 
         ]);
+
+        $customer=new customer();
+        $customer->user_id=$user->id;
+        $customer->uuid=Str::uuid()->toString();
+        $customer->save();
+
+        return $user;
     }
 
     
