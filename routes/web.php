@@ -6,6 +6,10 @@ use App\Http\Controllers\branchcontroller;
 use App\Http\Controllers\townshipcontroller;
 use App\Http\Controllers\citycontroller;
 use App\Http\Controllers\rolecontroller;
+use App\Http\Controllers\categorycontroller;
+use App\Http\Controllers\sizecontroller;
+use App\Http\Controllers\colorcontroller;
+use App\Http\Controllers\itemcontroller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,7 +34,7 @@ Auth::routes();
 Route::get('adminregister',[admincontroller::class,'regform']);
 Route::get('/Admin/dashboard',[admincontroller::class,'admindashboard'])->name('admin.dashboard');
 Route::get('/Admin/login',[admincontroller::class,'loginform'])->name('admin.loginform');
-Route::get('/admin/loginprocess',[admincontroller::class,'loginprocess']);
+Route::post('/admin/loginprocess',[admincontroller::class,'loginprocess']);
 
 // branch route
 Route::resource('branchprocess', branchcontroller::class);
@@ -49,6 +53,19 @@ Route::get('citysearch',[citycontroller::class,"searchprocess"]);
 Route::resource('roleprocess', rolecontroller::class);
 Route::get('rolesearch',[rolecontroller::class,"searchprocess"]);
 
+// Category Route
+Route::resource('categoryprocess',categorycontroller::class);
+
+// Size ROute
+Route::resource('sizeprocess', sizecontroller::class);
+
+// Color Route
+Route::resource('colorprocess',colorcontroller::class);
+
+// Item Route
+Route::resource('itemprocess', itemcontroller::class);
+Route::post('buttonrequest',[itemcontroller::class,"buttonreq"])->name("buttonrequest");
+
 // Admin Route Only
 Route::get('/admin/register',[admincontroller::class,"staffRegister"]);
 Route::post('/admin/save',[admincontroller::class,"Register"]);
@@ -59,9 +76,9 @@ Route::post('/admin/{id}/update',[admincontroller::class,"staffupdate"]);
 Route::get('/admin/{id}/detail',[admincontroller::class,"staffdetails"]);
 
 Route::get('/customer/register',[admincontroller::class,"customerreg"]);
-Route::get('/customer/list',[admincontroller::class,"customerlist"]);
+Route::get('/customer/list',[admincontroller::class,"customerlist"])->name('customer.list');
 Route::get('/customer/{id}/detail',[admincontroller::class,"customerdetail"]);
-Route::post('/customer/{id}/update',[AdminController::class,"customerupdate"]);
+Route::post('/customer/{id}/update',[admincontroller::class,"customerupdate"]);
 
 // view route
 // Route::view('/branch/create', 'branch.create');

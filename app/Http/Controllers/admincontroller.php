@@ -71,7 +71,7 @@ class admincontroller extends Controller
             ]);
 
             $request["usertype"]="customer";
-            $request["branch_id"] = 6; 
+            $request["branch_id"] = 1; 
         }
         else
         {
@@ -181,13 +181,13 @@ class admincontroller extends Controller
     function customerlist()
     {
         
-        // $customer_list = DB::table('users')
-        //             ->join('customers','customers.user_id','=','users.id')
-        //             ->join('branches','branches.id','=','users.branch_id')
-        //             ->where('users.type',"customer")
-        //             ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
-        //             ->get();
-        $customer_list=user::all();
+        $customer_list = DB::table('users')
+                    ->join('customers','customers.user_id','=','users.id')
+                    ->join('branches','branches.id','=','users.branch_id')
+                    ->where('users.type',"customer")
+                    ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
+                    ->get();
+        // $customer_list=user::all();
                 // dd($customer_list);
         return view('Customer.index',compact('customer_list'));
     }
@@ -231,12 +231,13 @@ class admincontroller extends Controller
         $customer->point = $request->point;
         $customer->save();
 
-        $user = DB::table('users')
+        $update = DB::table('users')
                     ->join('customers','customers.user_id','=','users.id')
                     ->join('branches','branches.id','=','users.branch_id')
                     ->where('users.id',$id)
                     ->select('users.*','branches.name as branchname','customers.totalamount','customers.point')
                     ->first();
-        return redirect('/customer/list',compact('user'));
+                    dd($update);
+        return redirect('/customer/list',compact('update'));
     }
 }

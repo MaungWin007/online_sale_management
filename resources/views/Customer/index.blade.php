@@ -30,7 +30,6 @@
                 <th>Email</th>
                 <th>Phone No</th>
                 <th>Image</th>
-                <th>Role</th>
                 <th>Branch</th>
                 <th>Status</th>
                 <th>Total Amount</th>
