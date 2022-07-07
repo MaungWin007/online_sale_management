@@ -10,6 +10,8 @@ use App\Http\Controllers\categorycontroller;
 use App\Http\Controllers\sizecontroller;
 use App\Http\Controllers\colorcontroller;
 use App\Http\Controllers\itemcontroller;
+use App\Http\Controllers\branchitemcontroller;
+use App\Http\Controllers\salecontroller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,7 +24,7 @@ use App\Http\Controllers\itemcontroller;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Admin.login');
 });
 
 Route::get('admin',function(){
@@ -32,11 +34,13 @@ Route::get('admin',function(){
 
 Auth::routes();
 Route::get('adminregister',[admincontroller::class,'regform']);
-Route::get('/Admin/dashboard',[admincontroller::class,'admindashboard'])->name('admin.dashboard');
+Route::get('/Admin/dashboard',[admincontroller::class,'admindashboard'])->name('admin.dashboard')->middleware("adminpass");
 Route::get('/Admin/login',[admincontroller::class,'loginform'])->name('admin.loginform');
 Route::post('/admin/loginprocess',[admincontroller::class,'loginprocess']);
 
-// branch route
+
+Route::middleware(['adminpass'])->group(function(){
+    // branch route
 Route::resource('branchprocess', branchcontroller::class);
 Route::get('branchsearch',[branchcontroller::class,"searchprocess"]);
 
@@ -65,6 +69,25 @@ Route::resource('colorprocess',colorcontroller::class);
 // Item Route
 Route::resource('itemprocess', itemcontroller::class);
 Route::post('buttonrequest',[itemcontroller::class,"buttonreq"])->name("buttonrequest");
+Route::post('ajaxdelete',[itemcontroller::class,"ajaxdelete"])->name("delete");
+
+// BranchItem
+Route::resource('branchitemprocess',branchitemcontroller::class);
+Route::get('searchbranchitem',[branchitemcontroller::class,"searchbutton"]);
+Route::post('detailid',[branchitemcontroller::class,"btnselected"]);
+ROute::post('addinfo',[branchitemcontroller::class,"add_data"]);
+Route::post('branchitemdelete',[branchitemcontroller::class,"branchitemdelete"])->name("branchitemdelete");
+
+// Sale Controller
+Route::resource('saleprocess',salecontroller::class);
+Route::post('detail',[salecontroller::class,"detail"]);
+Route::post('add_data',[salecontroller::class,"add_data"]);
+Route::post('branchitemdelete',[salecontroller::class,"branchitemdelete"])->name("branchitemdelete");
+Route::get('customersearch',[salecontroller::class,"customersearch"])->name("btncustomer");
+Route::get('sale_detail/{id}',[salecontroller::class,"detail_data"]);
+Route::get('generatesalepdf/{id}',[salecontroller::class,"generatepdf"]);
+Route::get('exportexcel/{id}',[salecontroller::class,"export"]);
+});
 
 // Admin Route Only
 Route::get('/admin/register',[admincontroller::class,"staffRegister"]);

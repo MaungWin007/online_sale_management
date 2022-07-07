@@ -120,7 +120,7 @@ class itemcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         //
     }
@@ -187,5 +187,19 @@ class itemcontroller extends Controller
         
 
         
+    }
+    public function ajaxdelete(Request $request)
+    {
+        $key=$request->id;
+        // return $key;
+        $deletedata=session()->get('data');
+     
+        //  return $deletedata;
+        unset($deletedata[$key]);
+        $deletedata=array_values($deletedata);
+        session()->put('data',$deletedata);
+        $insert=session()->get('data');
+        return $insert;
+
     }
 }

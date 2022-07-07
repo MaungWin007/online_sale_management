@@ -213,10 +213,10 @@ $(document).ready(function(e){
 
     $('#btn').click(function(e){
         e.preventDefault();
-        alert("btn");
+        //alert("btn");
         var color=$('#colorid').val().split("&");
         var size=$('#sizeid').val().split("&");
-
+        
         $.ajax({
             type:'POST',
             url:"{{route('buttonrequest')}}",
@@ -229,12 +229,16 @@ $(document).ready(function(e){
                     table=table+"<tr><td>C</td><td>S</td><td>S</td><td>S</td></tr>";
                 var tr1="Color Name";
                 var tr2="Size Name";
+                var d=0;
                 
                 $.each(data,function(key,value){
                     table=table+"<tr>"; 
                     table=  table+"<td>"+ value.colorname+"</td>";
                     table=  table+"<td>"+ value.sizename+"</td>";
+                    table=table+"<td><button type=button class=delete btn-danger id=deleteid"+d+" value="+d+">"+"DELETE</button></td>";
                     table=table+"</tr>"; 
+
+                    d++;
                 });
               
                 table=table+"</table>";
@@ -244,6 +248,41 @@ $(document).ready(function(e){
 
             }
         });
+    });
+
+    $(document).on('click','.delete',function(){
+        var id=$(this).attr('id');//deleteid0
+        var value=$('#'+id).val();
+        // alert(value);
+        $.ajax({
+            type:'POST',
+            url:"{{route('delete')}}",
+            data:{id:value},
+            success:function(data){
+                // alert(JSON.stringify(data));
+                var table="<table>";
+                    table=table+"<tr><td>C</td><td>S</td><td>S</td><td>S</td></tr>";
+                var tr1="Color Name";
+                var tr2="Size Name";
+                var d=0;
+                
+                $.each(data,function(key,value){
+                    table=table+"<tr>"; 
+                    table=  table+"<td>"+ value.colorname+"</td>";
+                    table=  table+"<td>"+ value.sizename+"</td>";
+                    table=table+"<td><button type=button class=delete btn-danger id=deleteid"+d+" value="+d+">"+"DELETE</button></td>";
+                    table=table+"</tr>"; 
+
+                    d++;
+                });
+              
+                table=table+"</table>";
+                
+                $('#list').html(table);
+            }
+        });
+       
+       
     });
 });
 </script>

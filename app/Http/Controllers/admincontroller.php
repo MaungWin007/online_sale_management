@@ -60,9 +60,10 @@ class admincontroller extends Controller
     }
     function Register(Request $request)
     {
-        
+      //   dd($request);
         if(!isset($request["usertype"]))
         {
+            
             $this->validate($request,[
                 'name'=>['required','max:255'],
                 'phoneno' => ['required', 'max:255'],
@@ -75,15 +76,14 @@ class admincontroller extends Controller
         }
         else
         {
-            $this->validate($request,[
-                'name'=>['required','max:255'],
-                'phoneno' => ['required', 'max:255'],
-                'email' => ['required', 'email', 'max:255', 'unique:users'],
-                'password' => ['required','max:255','confirmed'],
-                'branch_id'=>['required'],
-                'role_id'=>['required']
-            ]);
+          
+             $this->validate($request,[
+              'name'=>['required','max:255'],
+               
+                 
+             ]);
         }
+    //   dd($request);
 
         $user = User::create([
             'name' => $request['name'],
@@ -105,6 +105,8 @@ class admincontroller extends Controller
             $staff->role_id = $request["role_id"];
             $staff->uuid = Str::uuid()->toString();
             $staff->save();
+
+
 
             return redirect('/admin');
         }
@@ -133,7 +135,7 @@ class admincontroller extends Controller
                                 ->get();
 
         
-        //dd($staff_list);
+        // dd($staff_list);
 
         return view('Admin.index',compact('staff_list'));
     }
