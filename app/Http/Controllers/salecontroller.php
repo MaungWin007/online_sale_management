@@ -262,30 +262,37 @@ class salecontroller extends Controller
         // return view('sale.index',compact('sale_detail'));
 
     }
-    public function generatepdf()
-    {
-        $sale_record=DB::table('sales')
-         ->join('users','users.id','=','sales.customer_id')
-         ->join('branches','branches.id','=','sales.branch_id')
-         ->join('townships','townships.id','=','sales.township_id')
-         ->select('sales.*','users.name as uname','users.email as uemail','branches.name as bname','townships.name as tname')
-         ->get();
+     public function generatepdf()
+     {
+    // {
+    //     $sale_record=DB::table('sales')
+    //      ->join('users','users.id','=','sales.customer_id')
+    //      ->join('branches','branches.id','=','sales.branch_id')
+    //      ->join('townships','townships.id','=','sales.township_id')
+    //      ->select('sales.*','users.name as uname','users.email as uemail','branches.name as bname','townships.name as tname')
+    //      ->get();
 
-         $sale_detail=DB::table('saleitems')
-         ->join('itemdetails','itemdetails.id','=','saleitems.itemdetails_id')
-         ->join('items','items.id','=','itemdetails.item_id')
-         ->join('colors','colors.id','=','itemdetails.color_id')
-         ->join('sizes','sizes.id','=','itemdetails.size_id')
-         ->join('itemphotos','itemphotos.item_id','=','items.id')
-         ->select('saleitems.*','itemdetails.*','items.model as mod','colors.colorname as cname','sizes.sizename as sname','itemphotos.photo as img')
-         ->get();
-         $data=[
-            "sale_record"=>$sale_record,
-            "sale_detail"=>$sale_detail
-         ];
+    //      $sale_detail=DB::table('saleitems')
+    //      ->join('itemdetails','itemdetails.id','=','saleitems.itemdetails_id')
+    //      ->join('items','items.id','=','itemdetails.item_id')
+    //      ->join('colors','colors.id','=','itemdetails.color_id')
+    //      ->join('sizes','sizes.id','=','itemdetails.size_id')
+    //      ->join('itemphotos','itemphotos.item_id','=','items.id')
+    //      ->select('saleitems.*','itemdetails.*','items.model as mod','colors.colorname as cname','sizes.sizename as sname','itemphotos.photo as img')
+    //      ->get();
 
-         $pdf=Pdf::loadView("generatedpdf",$data);
-         dd($pdf);
+
+    //      $data=[
+    //         "sale_record"=>$sale_record,
+    //         "sale_detail"=>$sale_detail
+    //      ];
+    $data=[
+        'H'=>"HELLO"
+    ];
+    // dd($data);
+
+         $pdf=Pdf::loadView('generatedpdf',$data);
+        //  dd($data);
          return $pdf->download('generatesalepdf.pdf');
     }
     public function export()
